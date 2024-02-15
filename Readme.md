@@ -1,7 +1,7 @@
 # Личный проект «Кекстаграм»
 
 * Студент: [Игорь Рихтер](https://up.htmlacademy.ru/javascript/31/user/2408769).
-* Наставник: `Неизвестно`.
+* Наставник: [Александр Медведев](https://htmlacademy.ru/profile/exteep).
 
 ---
 
