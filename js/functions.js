@@ -2,10 +2,10 @@
 
 function stringСheck(string, length) {
   if (string.length <= length) {
-    return true
+    return true;
   }
 
-  return false
+  return false;
 }
 
 // Примеры использования функции
@@ -21,7 +21,7 @@ function isPalindrome(str) {
 
   for (let i = 0; i < str.length / 2; i++) {
     if (str[i] !== str[str.length - 1 - i]) {
-        return false;
+      return false;
     }
   }
 
@@ -42,7 +42,7 @@ function extractNumbers(str) {
   let extractedDigits = '';
 
   for (let i = 0; i < str.length; i++) {
-    if (!isNaN(parseInt(str[i]))) {
+    if (!isNaN(parseInt(str[i], 10))) {
       extractedDigits += str[i];
     }
   }
@@ -51,7 +51,7 @@ function extractNumbers(str) {
     return NaN;
   }
 
-  return parseInt(extractedDigits);
+  return parseInt(extractedDigits, 10);
 }
 
 // Примеры использования функции
