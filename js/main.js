@@ -49,51 +49,46 @@ const getRandomInteger = (a, b) => {
 
 const getRandomArrayElement = (elements) => elements[getRandomInteger(1, elements.length - 1)];
 
-const similarPhotoDescription = [];
-
-const createPhotoDescription = () => {
-  const id = getRandomInteger(1, 25);
-  const url = `photos/${id}.jpg`;
-
-  const isDuplicate = similarPhotoDescription.some((photo) => photo.id === id || photo.url === url);
-
-  if (isDuplicate) {
-    return createPhotoDescription();
-  }
-
-  const commentsCount = getRandomInteger(0, 30);
-  const comments = [];
-
-  const createComments = () => {
-    const commentId = getRandomInteger(1, 31);
-
-    const isDuplicateComment = comments.some((comment) => comment.id === commentId);
-
-    if (isDuplicateComment) {
-      return createComments();
+const getRandomIdGenerator = (min, max) => {
+  const ids = [];
+  return function() {
+    let id = getRandomInteger(min, max);
+    while(ids.includes(id)) {
+      id = getRandomInteger(min, max);
     }
-
-    return {
-      id: commentId,
-      avatar: `img/avatar-${getRandomInteger(1, 6)}.svg`,
-      message: getRandomArrayElement(MESSAGE),
-      name: getRandomArrayElement(NAME),
-    };
+    ids.push(id);
+    return id;
   };
+};
 
-  for (let i = 0; i < commentsCount; i++) {
-    comments.push(createComments());
-  }
+const getRandomDiscriptionId = getRandomIdGenerator(1, 25);
+const getRandomCommentId = getRandomIdGenerator(1, 1000);
+
+const createComments = () => {
+  const commentId = getRandomCommentId();
 
   return {
-    id: `${id}`,
-    url: url,
+    id: commentId,
+    avatar: `img/avatar-${getRandomInteger(1, 6)}.svg`,
+    message: getRandomArrayElement(MESSAGE),
+    name: getRandomArrayElement(NAME),
+  };
+};
+
+const createPhotoDescription = () => {
+  const id = getRandomDiscriptionId();
+  const commentsCount = getRandomInteger(0, 30);
+  const comments = Array.from({length: commentsCount}, createComments);
+
+  return {
+    id: id,
+    url: `photos/${id}.jpg`,
     description: getRandomArrayElement(DISCRIPTION),
-    likes: `${getRandomInteger(15, 200)}`,
+    likes: getRandomInteger(15, 200),
     comments: comments,
   };
 };
 
-for (let i = 0; i < SIMILAR_PHOTO_COUNT; i++) {
-  similarPhotoDescription.push(createPhotoDescription());
-}
+const similarPhotoDescription = Array.from({length: SIMILAR_PHOTO_COUNT}, createPhotoDescription);
+
+console.log(similarPhotoDescription)
