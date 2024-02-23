@@ -89,6 +89,5 @@ const createPhotoDescription = () => {
   };
 };
 
-const similarPhotoDescription = Array.from({length: SIMILAR_PHOTO_COUNT}, createPhotoDescription);
+Array.from({ length: SIMILAR_PHOTO_COUNT }, createPhotoDescription);
 
-console.log(similarPhotoDescription)
