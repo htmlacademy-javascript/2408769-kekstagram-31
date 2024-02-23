@@ -47,10 +47,6 @@ function extractNumbers(str) {
     }
   }
 
-  if (extractedDigits === '') {
-    return NaN;
-  }
-
   return parseInt(extractedDigits, 10);
 }
 
