@@ -62,21 +62,20 @@ extractNumbers(-115);
 
 function timeCheck(startDay, endDay, startMeet, meetDuration) {
   function timeToMinutes(time) {
-    var parts = time.split(':');
-    return parseInt(parts[0]) * 60 + parseInt(parts[1]);
+    const parts = time.split(':');
+    return parseInt(parts[0], 10) * 60 + parseInt(parts[1], 10);
   }
 
   startDay = timeToMinutes(startDay);
   endDay = timeToMinutes(endDay);
   startMeet = timeToMinutes(startMeet);
 
-  let meetEnd = startMeet + meetDuration;
+  const meetEnd = startMeet + meetDuration;
 
   if (startMeet >= startDay && meetEnd <= endDay) {
-      return true;
-  } else {
-      return false;
+    return true;
   }
+  return false;
 }
 
 // Примеры использования функции
@@ -87,4 +86,3 @@ timeCheck('08:00', '14:30', '14:00', 90);
 timeCheck('14:00', '17:30', '08:0', 90);
 timeCheck('8:00', '17:30', '08:00', 900);
 
-console.log(timeCheck('08:00', '17:30', '14:00', 90))
