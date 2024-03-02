@@ -1,4 +1,4 @@
-import {getRandomInteger, getRandomArrayElement, getRandomIdGenerator} from './util.js';
+import {getRandomInteger, getRandomArrayElement, getRandomIdGenerator} from './utils.js';
 
 const DISCRIPTION = [
   'На фото - озеро с кристально чистой водой, отражающее соседние горы, словно огромное зеркало природы.',
@@ -42,7 +42,7 @@ const MESSAGE = [
 
 const SIMILAR_PHOTO_COUNT = 25;
 
-const getRandomDiscriptionId = getRandomIdGenerator(1, 25);
+const getRandomDiscriptionId = getRandomIdGenerator(1, SIMILAR_PHOTO_COUNT);
 const getRandomCommentId = getRandomIdGenerator(1, 1000);
 
 const createComments = () => {
