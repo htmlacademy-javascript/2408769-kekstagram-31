@@ -1,6 +1,6 @@
 import {getRandomInteger, getRandomArrayElement, getRandomIdGenerator} from './utils.js';
 
-const DISCRIPTION = [
+const DISCRIPTIONS = [
   'На фото - озеро с кристально чистой водой, отражающее соседние горы, словно огромное зеркало природы.',
   'Забавный кадр: пушистый котенок сидит на вершине дерева и любопытно рассматривает происходящее внизу.',
   'Фотография показывает морской закат с ярко-оранжевыми и розовыми оттенками, заливающими небо над горизонтом.',
@@ -12,7 +12,7 @@ const DISCRIPTION = [
   'Снимок уличной еды: сочные бургеры на палубе лодки в местном порту.',
 ];
 
-const NAME = [
+const NAMES = [
   'Иван',
   'Игорь',
   'Мария',
@@ -31,7 +31,7 @@ const NAME = [
   'Алиса',
 ];
 
-const MESSAGE = [
+const MESSAGES = [
   'Всё отлично!',
   'В целом всё неплохо. Но не всё.',
   'Когда вы делаете фотографию, хорошо бы убирать палец из кадра. В конце концов это просто непрофессионально.',
@@ -45,28 +45,28 @@ const SIMILAR_PHOTO_COUNT = 25;
 const getRandomDiscriptionId = getRandomIdGenerator(1, SIMILAR_PHOTO_COUNT);
 const getRandomCommentId = getRandomIdGenerator(1, 1000);
 
-const createComments = () => {
+const createComment = () => {
   const commentId = getRandomCommentId();
 
   return {
     id: commentId,
     avatar: `img/avatar-${getRandomInteger(1, 6)}.svg`,
-    message: getRandomArrayElement(MESSAGE),
-    name: getRandomArrayElement(NAME),
+    message: getRandomArrayElement(MESSAGES),
+    name: getRandomArrayElement(NAMES),
   };
 };
 
 const createPhotoDescription = () => {
   const id = getRandomDiscriptionId();
   const commentsCount = getRandomInteger(0, 30);
-  const comments = Array.from({length: commentsCount}, createComments);
+  const comments = Array.from({length: commentsCount}, createComment);
 
   return {
     id: id,
     url: `photos/${id}.jpg`,
-    description: getRandomArrayElement(DISCRIPTION),
+    description: getRandomArrayElement(DISCRIPTIONS),
     likes: getRandomInteger(15, 200),
-    comments: comments,
+    comments,
   };
 };
 
