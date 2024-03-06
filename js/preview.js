@@ -61,6 +61,7 @@ function renderComments(comments) {
     avatarComment.classList.add('social__picture');
     avatarComment.src = comment.avatar;
     avatarComment.alt = comment.name;
+    Object.assign(avatarComment, { width: 35, height: 35 });
 
     const textComment = document.createElement('p');
     textComment.classList.add('social__text');
