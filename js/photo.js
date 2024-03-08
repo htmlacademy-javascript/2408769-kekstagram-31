@@ -3,18 +3,22 @@ import { createPhotos } from './data.js';
 const photoBlockElement = document.querySelector('.pictures');
 const photoTemplate = document.querySelector('#picture').content.querySelector('.picture');
 
-const userPhotos = createPhotos(25);
+const userPhotosData = createPhotos(25);
 
-const PhotosBlockFragment = document.createDocumentFragment();
+const photosListFragment = document.createDocumentFragment();
 
-userPhotos.forEach(({url, description, comments, likes}) => {
+userPhotosData.forEach(({url, description, comments, likes}, i) => {
   const photoElement = photoTemplate.cloneNode(true);
   const pictureImage = photoElement.querySelector('.picture__img');
   pictureImage.src = url;
   pictureImage.alt = description;
+  photoElement.setAttribute('data-index', i);
   photoElement.querySelector('.picture__comments').textContent = comments.length;
   photoElement.querySelector('.picture__likes').textContent = likes;
-  PhotosBlockFragment.append(photoElement);
+  photosListFragment.append(photoElement);
 });
 
-photoBlockElement.append(PhotosBlockFragment);
+photoBlockElement.append(photosListFragment);
+const userData = userPhotosData;
+
+export {userData, photoBlockElement};
