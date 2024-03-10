@@ -3,7 +3,7 @@ import { userData, photoBlockElement } from './photo.js';
 
 const bodyElement = document.querySelector('body');
 const bigPictureElement = document.querySelector('.big-picture');
-const bigPictureImageElement = bigPictureElement.querySelector('.big-picture__img img'); //children[0]
+const bigPictureImageElement = bigPictureElement.querySelector('.big-picture__img img');
 const bigPictureLikesElement = bigPictureElement.querySelector('.likes-count');
 const bigPictureDescriptionElement = bigPictureElement.querySelector('.social__caption');
 const bigPictureCommentTotalCountElement = bigPictureElement.querySelector('.social__comment-total-count');
@@ -52,26 +52,17 @@ function renderComments(comments) {
   bigPictureСommentsList.innerHTML = '';
   const startIndex = bigPictureСommentsList.children.length;
 
-  for (let i = startIndex; i < Math.min(comments.length, shownComments); i++) {
-    const comment = comments[i];
+  comments.slice(startIndex, Math.min(comments.length, shownComments)).forEach((comment) => {
     const commentElement = document.createElement('li');
     commentElement.classList.add('social__comment');
 
-    const avatarComment = document.createElement('img');
-    avatarComment.classList.add('social__picture');
-    avatarComment.src = comment.avatar;
-    avatarComment.alt = comment.name;
-    Object.assign(avatarComment, { width: 35, height: 35 });
-
-    const textComment = document.createElement('p');
-    textComment.classList.add('social__text');
-    textComment.textContent = comment.message;
-
-    commentElement.appendChild(avatarComment);
-    commentElement.appendChild(textComment);
+    commentElement.innerHTML = `
+      <img class="social__picture" src="${comment.avatar}" alt="${comment.name}" width="35" height="35">
+      <p class="social__text">${comment.message}</p>
+    `;
 
     bigPictureСommentsList.appendChild(commentElement);
-  }
+  });
 }
 
 function updateShownCommentCount(shownCommentsCount, totalCommentsCount) {
