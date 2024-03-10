@@ -52,7 +52,7 @@ function renderComments(comments) {
   bigPictureСommentsList.innerHTML = '';
   const startIndex = bigPictureСommentsList.children.length;
 
-  comments.slice(startIndex, Math.min(comments.length, shownComments)).forEach(comment => {
+  comments.slice(startIndex, Math.min(comments.length, shownComments)).forEach((comment) => {
     const commentElement = document.createElement('li');
     commentElement.classList.add('social__comment');
 
