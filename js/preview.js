@@ -1,7 +1,6 @@
-import { isEscapeKey } from './utils.js';
+import { onDocumentKeydown, bodyElement} from './utils.js';
 import { userData, photoBlockElement } from './photo.js';
 
-const bodyElement = document.querySelector('body');
 const bigPictureElement = document.querySelector('.big-picture');
 const bigPictureImageElement = bigPictureElement.querySelector('.big-picture__img img');
 const bigPictureLikesElement = bigPictureElement.querySelector('.likes-count');
@@ -15,12 +14,7 @@ const COMMENTS_STEP = 5;
 let shownComments;
 let currentPhotoIndex;
 
-const onDocumentKeydown = (evt) => {
-  if (isEscapeKey(evt)) {
-    evt.preventDefault();
-    closePreviewPhoto();
-  }
-};
+const closePreviewPhotoHandler = onDocumentKeydown(closePreviewPhoto);
 
 photoBlockElement.addEventListener('click', ({ target }) => {
   const photoIndex = target.closest('[data-index]');
@@ -75,13 +69,13 @@ function updateShownCommentCount(shownCommentsCount, totalCommentsCount) {
 function openPreviewPhoto() {
   bigPictureElement.classList.remove('hidden');
   bodyElement.classList.add('modal-open');
-  document.addEventListener('keydown', onDocumentKeydown);
+  document.addEventListener('keydown', closePreviewPhotoHandler);
 }
 
 function closePreviewPhoto() {
   bigPictureElement.classList.add('hidden');
   bodyElement.classList.remove('modal-open');
-  document.removeEventListener('keydown', onDocumentKeydown);
+  document.removeEventListener('keydown', closePreviewPhotoHandler);
 }
 
 bigPictureCommentLoaderElement.addEventListener('click', () => {
