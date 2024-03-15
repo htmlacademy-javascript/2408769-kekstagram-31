@@ -21,4 +21,20 @@ const getRandomIdGenerator = (min, max) => {
 
 const isEscapeKey = (evt) => evt.key === 'Escape';
 
-export {getRandomInteger, getRandomArrayElement, getRandomIdGenerator, isEscapeKey};
+const onDocumentKeydown = (callback) => (evt) => {
+  if (isEscapeKey(evt)) {
+    evt.preventDefault();
+    evt.stopPropagation();
+    callback();
+  }
+};
+
+const blurElementOnEscape = (element) => {
+  element.addEventListener('keydown', onDocumentKeydown(() => {
+    element.blur();
+  }));
+};
+
+const bodyElement = document.querySelector('body');
+
+export {getRandomInteger, getRandomArrayElement, getRandomIdGenerator, onDocumentKeydown, bodyElement, blurElementOnEscape};
