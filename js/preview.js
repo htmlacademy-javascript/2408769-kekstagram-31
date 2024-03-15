@@ -1,4 +1,4 @@
-import { onDocumentKeydown, bodyElement} from './utils.js';
+import { onDocumentKeydown } from './utils.js';
 import { userData, photoBlockElement } from './photo.js';
 
 const bigPictureElement = document.querySelector('.big-picture');
@@ -68,13 +68,13 @@ function updateShownCommentCount(shownCommentsCount, totalCommentsCount) {
 
 function openPreviewPhoto() {
   bigPictureElement.classList.remove('hidden');
-  bodyElement.classList.add('modal-open');
+  document.body.classList.add('modal-open');
   document.addEventListener('keydown', closePreviewPhotoHandler);
 }
 
 function closePreviewPhoto() {
   bigPictureElement.classList.add('hidden');
-  bodyElement.classList.remove('modal-open');
+  document.body.classList.remove('modal-open');
   document.removeEventListener('keydown', closePreviewPhotoHandler);
 }
 
