@@ -1,28 +1,30 @@
-const editorWindowValueConrtol = document.querySelector('.scale__control--value');
-const fileDownloadPreview = document.querySelector('.img-upload__preview');
+const editorValueConrtol = document.querySelector('.scale__control--value');
+const fileDownloadPreview = document.querySelector('.img-upload__preview img');
 const editorWindowBiggerConrtolButton = document.querySelector('.scale__control--bigger');
 const editorWindowSmallerConrtolButton = document.querySelector('.scale__control--smaller');
 
 
-const PERSENT_STEP = 25;
+const STEP_SCALE = 25;
+const MIN_SCALE = 25;
+const MAX_SCALE = 100;
 
 function zoom(step) {
-  let value = parseFloat(editorWindowValueConrtol.value);
+  let value = parseFloat(editorValueConrtol.value);
 
-  if (value >= 25 && value <= 100) {
+  if (value >= MIN_SCALE && value <= MAX_SCALE) {
     value += step;
-    value = Math.min(Math.max(value, 25), 100);
-    editorWindowValueConrtol.value = value + '%';
+    value = Math.min(Math.max(value, MIN_SCALE), MAX_SCALE);
+    editorValueConrtol.value = `${value }%`;
     fileDownloadPreview.style.transform = `scale(${value / 100})`;
   }
 }
 
 function zoomOut() {
-  zoom(-PERSENT_STEP);
+  zoom(-STEP_SCALE);
 }
 
 function zoomIn() {
-  zoom(PERSENT_STEP);
+  zoom(STEP_SCALE);
 }
 
 editorWindowSmallerConrtolButton.addEventListener('click', () => {
@@ -32,3 +34,5 @@ editorWindowSmallerConrtolButton.addEventListener('click', () => {
 editorWindowBiggerConrtolButton.addEventListener('click', () => {
   zoomIn();
 });
+
+export { fileDownloadPreview, editorValueConrtol };

@@ -25,7 +25,6 @@ const onDocumentKeydown = (callback) => (evt) => {
   if (isEscapeKey(evt)) {
     evt.preventDefault();
     callback();
-    evt.stopPropagation();
   }
 };
 
@@ -33,6 +32,6 @@ const onKeyStopPropagation = (evt) => {
   if (evt.key === 'Escape') {
     evt.stopPropagation();
   }
-}
+};
 
 export {getRandomInteger, getRandomArrayElement, getRandomIdGenerator, onDocumentKeydown, onKeyStopPropagation };

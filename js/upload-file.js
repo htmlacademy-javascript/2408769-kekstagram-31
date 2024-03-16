@@ -1,5 +1,6 @@
 import { onDocumentKeydown, onKeyStopPropagation } from './utils.js';
 import { imageUploadHashtags, imageUploadTextarea } from './form-validator.js';
+import { sliderBackground } from './effect-slider.js';
 import './photo-zoom.js';
 
 const fileDownloadControl = document.querySelector('.img-upload__input');
@@ -14,6 +15,7 @@ function openEditorWindow() {
   document.addEventListener('keydown', closeEditorWindowHandler);
   imageUploadHashtags.addEventListener('keydown', onKeyStopPropagation);
   imageUploadTextarea.addEventListener('keydown', onKeyStopPropagation);
+  sliderBackground.classList.add('hidden');
 }
 
 function closeEditorWindow() {

@@ -16,17 +16,17 @@ let currentPhotoIndex;
 
 const closePreviewPhotoHandler = onDocumentKeydown(closePreviewPhoto);
 
-photoBlockElement.addEventListener('click', ({ target }) => {
-  const photoIndex = target.closest('[data-index]');
-  if (!photoIndex) {
-    return;
+photoBlockElement.addEventListener('click', (evt) => {
+  const photoIndex = evt.target.closest('[data-index]');
+
+  if (photoIndex) {
+    evt.preventDefault();
+
+    currentPhotoIndex = photoIndex.dataset.index;
+    const photoData = userData[currentPhotoIndex];
+    fillPhoto(photoData);
+    openPreviewPhoto();
   }
-
-  currentPhotoIndex = photoIndex.dataset.index;
-  const photoData = userData[currentPhotoIndex];
-
-  fillPhoto(photoData);
-  openPreviewPhoto();
 });
 
 function fillPhoto(photoData) {

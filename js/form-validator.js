@@ -33,4 +33,4 @@ imageUploadForm.addEventListener('submit', (evt) => {
   }
 });
 
-export {imageUploadTextarea, imageUploadHashtags}
+export { imageUploadTextarea, imageUploadHashtags };
