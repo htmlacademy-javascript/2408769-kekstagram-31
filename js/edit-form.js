@@ -1,9 +1,8 @@
 import { onDocumentKeydown, onKeyStopPropagation } from './utils.js';
 import { imageUploadHashtags, imageUploadTextarea } from './form-validator.js';
 import { sliderBackground } from './effect-slider.js';
-import './photo-zoom.js';
+import { fileDownloadControl } from './effect-zoom.js';
 
-const fileDownloadControl = document.querySelector('.img-upload__input');
 const fileDownloadOverlay = document.querySelector('.img-upload__overlay');
 const editorWindowCloseButton = document.querySelector('.img-upload__cancel');
 
@@ -34,4 +33,3 @@ fileDownloadControl.addEventListener('change', () => {
 editorWindowCloseButton.addEventListener('click', () => {
   closeEditorWindow();
 });
-
