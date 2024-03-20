@@ -24,17 +24,14 @@ const isEscapeKey = (evt) => evt.key === 'Escape';
 const onDocumentKeydown = (callback) => (evt) => {
   if (isEscapeKey(evt)) {
     evt.preventDefault();
-    evt.stopPropagation();
     callback();
   }
 };
 
-const blurElementOnEscape = (element) => {
-  element.addEventListener('keydown', onDocumentKeydown(() => {
-    element.blur();
-  }));
+const onKeyStopPropagation = (evt) => {
+  if (evt.key === 'Escape') {
+    evt.stopPropagation();
+  }
 };
 
-const bodyElement = document.querySelector('body');
-
-export {getRandomInteger, getRandomArrayElement, getRandomIdGenerator, onDocumentKeydown, bodyElement, blurElementOnEscape};
+export {getRandomInteger, getRandomArrayElement, getRandomIdGenerator, onDocumentKeydown, onKeyStopPropagation };

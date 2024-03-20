@@ -1,6 +1,8 @@
-import { onDocumentKeydown, bodyElement} from './utils.js';
+import { onDocumentKeydown, onKeyStopPropagation } from './utils.js';
+import { imageUploadHashtags, imageUploadTextarea } from './form-validator.js';
+import { sliderBackground } from './effect-slider.js';
+import { fileDownloadControl } from './effect-zoom.js';
 
-const fileDownloadControl = document.querySelector('.img-upload__input');
 const fileDownloadOverlay = document.querySelector('.img-upload__overlay');
 const editorWindowCloseButton = document.querySelector('.img-upload__cancel');
 
@@ -8,15 +10,20 @@ const closeEditorWindowHandler = onDocumentKeydown(closeEditorWindow);
 
 function openEditorWindow() {
   fileDownloadOverlay.classList.remove('hidden');
-  bodyElement.classList.add('modal-open');
+  document.body.classList.add('modal-open');
   document.addEventListener('keydown', closeEditorWindowHandler);
+  imageUploadHashtags.addEventListener('keydown', onKeyStopPropagation);
+  imageUploadTextarea.addEventListener('keydown', onKeyStopPropagation);
+  sliderBackground.classList.add('hidden');
 }
 
 function closeEditorWindow() {
   fileDownloadOverlay.classList.add('hidden');
-  bodyElement.classList.remove('modal-open');
+  document.body.classList.remove('modal-open');
   document.removeEventListener('keydown', closeEditorWindowHandler);
   document.querySelector('.img-upload__input').value = '';
+  imageUploadHashtags.removeEventListener('keydown', onKeyStopPropagation);
+  imageUploadTextarea.removeEventListener('keydown', onKeyStopPropagation);
 }
 
 fileDownloadControl.addEventListener('change', () => {
@@ -26,4 +33,3 @@ fileDownloadControl.addEventListener('change', () => {
 editorWindowCloseButton.addEventListener('click', () => {
   closeEditorWindow();
 });
-

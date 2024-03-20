@@ -1,5 +1,3 @@
-import { blurElementOnEscape } from './utils.js';
-
 const imageUploadForm = document.querySelector('.img-upload__form');
 const imageUploadTextarea = document.querySelector('.text__description');
 const imageUploadHashtags = document.querySelector('.text__hashtags');
@@ -28,12 +26,11 @@ pristine.addValidator(imageUploadHashtags, validateHashtagLength, 'Максим�
 pristine.addValidator(imageUploadHashtags, validateHashtags, 'Введен невалидный хештег');
 pristine.addValidator(imageUploadHashtags, hasDuplicates, 'Хэштеги повторяются');
 
-blurElementOnEscape(imageUploadTextarea);
-blurElementOnEscape(imageUploadHashtags);
-
 imageUploadForm.addEventListener('submit', (evt) => {
   const isValid = pristine.validate();
   if (!isValid) {
     evt.preventDefault();
   }
 });
+
+export { imageUploadTextarea, imageUploadHashtags };
