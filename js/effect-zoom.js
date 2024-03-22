@@ -1,6 +1,6 @@
+import { fileDownloadControl, fileDownloadPreview } from './edit-form';
+
 const editorValueConrtol = document.querySelector('.scale__control--value');
-const fileDownloadPreview = document.querySelector('.img-upload__preview img');
-const fileDownloadControl = document.querySelector('.img-upload__input');
 const editorWindowBiggerConrtolButton = document.querySelector('.scale__control--bigger');
 const editorWindowSmallerConrtolButton = document.querySelector('.scale__control--smaller');
 
@@ -37,6 +37,4 @@ fileDownloadControl.addEventListener('change', () => {
 editorWindowSmallerConrtolButton.addEventListener('click', zoomOut);
 
 editorWindowBiggerConrtolButton.addEventListener('click', zoomIn);
-
-export { fileDownloadPreview, fileDownloadControl };
 

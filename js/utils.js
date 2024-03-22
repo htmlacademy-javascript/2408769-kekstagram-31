@@ -1,3 +1,5 @@
+const ALERT_SHOW_TIME = 5000;
+
 const getRandomInteger = (a, b) => {
   const lower = Math.ceil(Math.min(a, b));
   const upper = Math.floor(Math.max(a, b));
@@ -34,4 +36,62 @@ const onKeyStopPropagation = (evt) => {
   }
 };
 
-export {getRandomInteger, getRandomArrayElement, getRandomIdGenerator, onDocumentKeydown, onKeyStopPropagation };
+const showAlert = (message) => {
+  const alertTemple = document.querySelector('#data-error').content.querySelector('.data-error');
+
+  const alertElement = alertTemple.cloneNode(true);
+  alertElement.querySelector('.data-error__title').textContent = message;
+
+  document.body.append(alertElement);
+
+  setTimeout(() => {
+    alertElement.remove();
+  }, ALERT_SHOW_TIME);
+};
+
+const showError = (message) => {
+  const errorTemple = document.querySelector('#error').content.querySelector('.error');
+
+  const errorElement = errorTemple.cloneNode(true);
+  errorElement.querySelector('.error__title').textContent = message;
+  const errorButton = errorElement.querySelector('.error__button');
+
+  document.body.append(errorElement);
+
+  const closeErrorWindowHandler = onDocumentKeydown(closeErrorWindow);
+
+  document.addEventListener('keydown', closeErrorWindowHandler);
+
+  errorButton.addEventListener('click', () => {
+    closeErrorWindow();
+  });
+
+  function closeErrorWindow() {
+    errorElement.remove();
+    document.removeEventListener('keydown', closeErrorWindowHandler);
+  }
+};
+
+const showSuccess = (message) => {
+  const SuccessTemple = document.querySelector('#success').content.querySelector('.success');
+  const SuccessElement = SuccessTemple.cloneNode(true);
+  SuccessElement.querySelector('.success__title').textContent = message;
+  const SuccessButton = SuccessElement.querySelector('.success__button');
+
+  document.body.append(SuccessElement);
+
+  const closeSuccessWindowHandler = onDocumentKeydown(closeSuccessWindow);
+
+  document.addEventListener('keydown', closeSuccessWindowHandler);
+
+  SuccessButton.addEventListener('click', () => {
+    closeSuccessWindow();
+  });
+
+  function closeSuccessWindow() {
+    SuccessElement.remove();
+    document.removeEventListener('keydown', closeSuccessWindowHandler);
+  }
+};
+
+export { onDocumentKeydown, onKeyStopPropagation, showAlert, showError, showSuccess };

@@ -11,8 +11,9 @@ const bigPictureCommentLoaderElement = bigPictureElement.querySelector('.comment
 const bigPictureСommentsList = bigPictureElement.querySelector('.social__comments');
 const bigPictureCloseButton = bigPictureElement.querySelector('.big-picture__cancel');
 const COMMENTS_STEP = 5;
-let shownComments;
+let shownComments = 0;
 let currentPhotoid;
+let currentPhoto;
 
 const closePreviewPhotoHandler = onDocumentKeydown(closePreviewPhoto);
 
@@ -23,46 +24,38 @@ const renderPictureFullsize = (photos) => {
     if (picture) {
       evt.preventDefault();
 
-      const currentPhotoid = picture.dataset.photoId;
-      const photoData = photos.find((photo) => photo.id === +currentPhotoid);
-      fillPhoto(photoData);
+      currentPhotoid = picture.dataset.photoId;
+      currentPhoto = photos.find((photo) => photo.id === +currentPhotoid);
+      fillPhoto(currentPhoto);
       openPreviewPhoto();
-
-      bigPictureCommentLoaderElement.addEventListener('click', () => {
-        const photoData = photos.find((photo) => photo.id === +currentPhotoid);
-        const commentTotalCount = parseInt(bigPictureCommentTotalCountElement.textContent, 10);
-        shownComments = Math.min(shownComments + COMMENTS_STEP, commentTotalCount);
-
-        updateShownCommentCount(shownComments, commentTotalCount);
-        renderComments(photoData.comments);
-      });
-
-      bigPictureCloseButton.addEventListener('click', () => {
-        closePreviewPhoto();
-      });
-
     }
   });
 }
 
-function fillPhoto(photoData) {
-  bigPictureImageElement.src = photoData.url;
-  bigPictureLikesElement.textContent = photoData.likes;
-  bigPictureCommentTotalCountElement.textContent = photoData.comments.length;
-  bigPictureDescriptionElement.textContent = photoData.description;
+function fillPhoto(currentPhoto) {
+  bigPictureImageElement.src = currentPhoto.url;
+  bigPictureLikesElement.textContent = currentPhoto.likes;
+  bigPictureCommentTotalCountElement.textContent = currentPhoto.comments.length;
+  bigPictureDescriptionElement.textContent = currentPhoto.description;
 
   const commentTotalCount = bigPictureCommentTotalCountElement.textContent;
   const shownCommentOnStep = Math.min(commentTotalCount, COMMENTS_STEP);
 
   updateShownCommentCount(shownCommentOnStep, commentTotalCount);
-  renderComments(photoData.comments);
+  renderComments(currentPhoto.comments);
+}
+
+function updateShownCommentCount(shownCommentsCount, totalCommentsCount) {
+  bigPictureCommentLoaderElement.style.display = shownCommentsCount >= totalCommentsCount ? 'none' : 'block';
+
+  bigPictureCommentShownCountElement.textContent = shownCommentsCount;
+  shownComments = shownCommentsCount;
 }
 
 function renderComments(comments) {
   bigPictureСommentsList.innerHTML = '';
   const startIndex = bigPictureСommentsList.children.length;
-  console.log(startIndex);
-  console.log(shownComments);
+
   comments.slice(startIndex, Math.min(comments.length, shownComments)).forEach((comment) => {
     const commentElement = document.createElement('li');
     commentElement.classList.add('social__comment');
@@ -76,13 +69,6 @@ function renderComments(comments) {
   });
 }
 
-function updateShownCommentCount(shownCommentsCount, totalCommentsCount) {
-  bigPictureCommentLoaderElement.style.display = shownCommentsCount >= totalCommentsCount ? 'none' : 'block';
-
-  bigPictureCommentShownCountElement.textContent = shownCommentsCount;
-  shownComments = shownCommentsCount;
-}
-
 function openPreviewPhoto() {
   bigPictureElement.classList.remove('hidden');
   document.body.classList.add('modal-open');
@@ -94,5 +80,19 @@ function closePreviewPhoto() {
   document.body.classList.remove('modal-open');
   document.removeEventListener('keydown', closePreviewPhotoHandler);
 }
+
+bigPictureCommentLoaderElement.addEventListener('click', () => {
+  if (currentPhoto) {
+    const commentTotalCount = currentPhoto.comments.length;
+    shownComments = Math.min(shownComments + COMMENTS_STEP, commentTotalCount);
+
+    updateShownCommentCount(shownComments, commentTotalCount);
+    renderComments(currentPhoto.comments);
+  }
+});
+
+bigPictureCloseButton.addEventListener('click', () => {
+  closePreviewPhoto();
+});
 
 export { renderPictureFullsize };
