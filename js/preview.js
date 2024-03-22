@@ -1,5 +1,5 @@
 import { onDocumentKeydown } from './utils.js';
-import { userData, photoBlockElement } from './photo.js';
+import { photoBlockElement } from './render-photos.js'
 
 const bigPictureElement = document.querySelector('.big-picture');
 const bigPictureImageElement = bigPictureElement.querySelector('.big-picture__img img');
@@ -12,22 +12,38 @@ const bigPictureСommentsList = bigPictureElement.querySelector('.social__commen
 const bigPictureCloseButton = bigPictureElement.querySelector('.big-picture__cancel');
 const COMMENTS_STEP = 5;
 let shownComments;
-let currentPhotoIndex;
+let currentPhotoid;
 
 const closePreviewPhotoHandler = onDocumentKeydown(closePreviewPhoto);
 
-photoBlockElement.addEventListener('click', (evt) => {
-  const photoIndex = evt.target.closest('[data-index]');
+const renderPictureFullsize = (photos) => {
+  photoBlockElement.addEventListener('click', (evt) => {
+    const picture = evt.target.closest('[data-photo-id]');
 
-  if (photoIndex) {
-    evt.preventDefault();
+    if (picture) {
+      evt.preventDefault();
 
-    currentPhotoIndex = photoIndex.dataset.index;
-    const photoData = userData[currentPhotoIndex];
-    fillPhoto(photoData);
-    openPreviewPhoto();
-  }
-});
+      const currentPhotoid = picture.dataset.photoId;
+      const photoData = photos.find((photo) => photo.id === +currentPhotoid);
+      fillPhoto(photoData);
+      openPreviewPhoto();
+
+      bigPictureCommentLoaderElement.addEventListener('click', () => {
+        const photoData = photos.find((photo) => photo.id === +currentPhotoid);
+        const commentTotalCount = parseInt(bigPictureCommentTotalCountElement.textContent, 10);
+        shownComments = Math.min(shownComments + COMMENTS_STEP, commentTotalCount);
+
+        updateShownCommentCount(shownComments, commentTotalCount);
+        renderComments(photoData.comments);
+      });
+
+      bigPictureCloseButton.addEventListener('click', () => {
+        closePreviewPhoto();
+      });
+
+    }
+  });
+}
 
 function fillPhoto(photoData) {
   bigPictureImageElement.src = photoData.url;
@@ -45,7 +61,8 @@ function fillPhoto(photoData) {
 function renderComments(comments) {
   bigPictureСommentsList.innerHTML = '';
   const startIndex = bigPictureСommentsList.children.length;
-
+  console.log(startIndex);
+  console.log(shownComments);
   comments.slice(startIndex, Math.min(comments.length, shownComments)).forEach((comment) => {
     const commentElement = document.createElement('li');
     commentElement.classList.add('social__comment');
@@ -78,15 +95,4 @@ function closePreviewPhoto() {
   document.removeEventListener('keydown', closePreviewPhotoHandler);
 }
 
-bigPictureCommentLoaderElement.addEventListener('click', () => {
-  const photoData = userData[currentPhotoIndex];
-  const commentTotalCount = parseInt(bigPictureCommentTotalCountElement.textContent, 10);
-  shownComments = Math.min(shownComments + COMMENTS_STEP, commentTotalCount);
-
-  updateShownCommentCount(shownComments, commentTotalCount);
-  renderComments(photoData.comments);
-});
-
-bigPictureCloseButton.addEventListener('click', () => {
-  closePreviewPhoto();
-});
+export { renderPictureFullsize };

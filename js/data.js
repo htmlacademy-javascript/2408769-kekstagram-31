@@ -71,5 +71,3 @@ const createPhotoDescription = () => {
 };
 
 const createPhotos = () => Array.from({ length: SIMILAR_PHOTO_COUNT }, createPhotoDescription);
-
-export {createPhotos};
