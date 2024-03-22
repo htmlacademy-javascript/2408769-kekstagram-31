@@ -1,5 +1,5 @@
 import { onDocumentKeydown } from './utils.js';
-import { photoBlockElement } from './render-photos.js'
+import { photoBlockElement } from './render-photos.js';
 
 const bigPictureElement = document.querySelector('.big-picture');
 const bigPictureImageElement = bigPictureElement.querySelector('.big-picture__img img');
@@ -30,19 +30,19 @@ const renderPictureFullsize = (photos) => {
       openPreviewPhoto();
     }
   });
-}
+};
 
-function fillPhoto(currentPhoto) {
-  bigPictureImageElement.src = currentPhoto.url;
-  bigPictureLikesElement.textContent = currentPhoto.likes;
-  bigPictureCommentTotalCountElement.textContent = currentPhoto.comments.length;
-  bigPictureDescriptionElement.textContent = currentPhoto.description;
+function fillPhoto(photo) {
+  bigPictureImageElement.src = photo.url;
+  bigPictureLikesElement.textContent = photo.likes;
+  bigPictureCommentTotalCountElement.textContent = photo.comments.length;
+  bigPictureDescriptionElement.textContent = photo.description;
 
   const commentTotalCount = bigPictureCommentTotalCountElement.textContent;
   const shownCommentOnStep = Math.min(commentTotalCount, COMMENTS_STEP);
 
   updateShownCommentCount(shownCommentOnStep, commentTotalCount);
-  renderComments(currentPhoto.comments);
+  renderComments(photo.comments);
 }
 
 function updateShownCommentCount(shownCommentsCount, totalCommentsCount) {

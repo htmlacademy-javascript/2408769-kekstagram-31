@@ -14,7 +14,7 @@ const renderPhotosList = (photos) => {
     photoElement.querySelector('.picture__comments').textContent = comments.length;
     photoElement.querySelector('.picture__likes').textContent = likes;
     photosListFragment.append(photoElement);
-  })
+  });
 
   photoBlockElement.append(photosListFragment);
 };

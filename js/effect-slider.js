@@ -1,4 +1,4 @@
-import { fileDownloadControl, fileDownloadPreview, sliderBackground } from './edit-form'
+import { fileDownloadControl, fileDownloadPreview, sliderBackground } from './edit-form';
 
 const sliderElement = document.querySelector('.effect-level__slider');
 const valueElement = document.querySelector('.effect-level__value');

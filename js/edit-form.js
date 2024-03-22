@@ -20,15 +20,13 @@ function openEditorWindow() {
 }
 
 function closeEditorWindow() {
-    fileDownloadOverlay.classList.add('hidden');
-    document.body.classList.remove('modal-open');
-    document.removeEventListener('keydown', closeEditorWindowHandler);
-    document.querySelector('.img-upload__input').value = '';
-    imageUploadHashtags.removeEventListener('keydown', onKeyStopPropagation);
-    imageUploadTextarea.removeEventListener('keydown', onKeyStopPropagation);
-};
-
-
+  fileDownloadOverlay.classList.add('hidden');
+  document.body.classList.remove('modal-open');
+  document.removeEventListener('keydown', closeEditorWindowHandler);
+  document.querySelector('.img-upload__input').value = '';
+  imageUploadHashtags.removeEventListener('keydown', onKeyStopPropagation);
+  imageUploadTextarea.removeEventListener('keydown', onKeyStopPropagation);
+}
 
 fileDownloadControl.addEventListener('change', () => {
   imageUploadTextarea.value = '';
