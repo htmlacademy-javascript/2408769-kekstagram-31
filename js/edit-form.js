@@ -1,4 +1,4 @@
-import { onDocumentKeydown, onKeyStopPropagation } from './utils.js';
+import { isEscapeKey, onKeyStopPropagation, isErrorWindowOpen } from './utils.js';
 
 const fileDownloadOverlay = document.querySelector('.img-upload__overlay');
 const editorWindowCloseButton = document.querySelector('.img-upload__cancel');
@@ -8,7 +8,11 @@ const sliderBackground = document.querySelector('.img-upload__effect-level');
 const imageUploadTextarea = document.querySelector('.text__description');
 const imageUploadHashtags = document.querySelector('.text__hashtags');
 
-const closeEditorWindowHandler = onDocumentKeydown(closeEditorWindow);
+const closeEditorWindowHandler = () => {
+  if (isEscapeKey && !isErrorWindowOpen) {
+    closeEditorWindow();
+  }
+};
 
 function openEditorWindow() {
   fileDownloadOverlay.classList.remove('hidden');

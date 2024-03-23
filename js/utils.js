@@ -1,26 +1,5 @@
 const ALERT_SHOW_TIME = 5000;
 
-// const getRandomInteger = (a, b) => {
-//   const lower = Math.ceil(Math.min(a, b));
-//   const upper = Math.floor(Math.max(a, b));
-//   const result = Math.random() * (upper - lower + 1) + lower;
-//   return Math.floor(result);
-// };
-
-// const getRandomArrayElement = (elements) => elements[getRandomInteger(1, elements.length - 1)];
-
-// const getRandomIdGenerator = (min, max) => {
-//   const ids = [];
-//   return function() {
-//     let id = getRandomInteger(min, max);
-//     while(ids.includes(id)) {
-//       id = getRandomInteger(min, max);
-//     }
-//     ids.push(id);
-//     return id;
-//   };
-// };
-
 const isEscapeKey = (evt) => evt.key === 'Escape';
 
 const onDocumentKeydown = (callback) => (evt) => {
@@ -31,10 +10,12 @@ const onDocumentKeydown = (callback) => (evt) => {
 };
 
 const onKeyStopPropagation = (evt) => {
-  if (evt.key === 'Escape') {
+  if (isEscapeKey) {
     evt.stopPropagation();
   }
 };
+
+let isErrorWindowOpen = false;
 
 const showAlert = (message) => {
   const alertTemple = document.querySelector('#data-error').content.querySelector('.data-error');
@@ -51,7 +32,6 @@ const showAlert = (message) => {
 
 const showError = (message) => {
   const errorTemple = document.querySelector('#error').content.querySelector('.error');
-
   const errorElement = errorTemple.cloneNode(true);
   errorElement.querySelector('.error__title').textContent = message;
   const errorButton = errorElement.querySelector('.error__button');
@@ -59,14 +39,21 @@ const showError = (message) => {
   document.body.append(errorElement);
 
   const closeErrorWindowHandler = onDocumentKeydown(closeErrorWindow);
-
+  isErrorWindowOpen = true;
   document.addEventListener('keydown', closeErrorWindowHandler);
+
+  errorElement.addEventListener('click', (evt) => {
+    if (!evt.target.closest('.error__inner')) {
+      closeErrorWindow();
+    }
+  });
 
   errorButton.addEventListener('click', () => {
     closeErrorWindow();
   });
 
   function closeErrorWindow() {
+    isErrorWindowOpen = false;
     errorElement.remove();
     document.removeEventListener('keydown', closeErrorWindowHandler);
   }
@@ -84,6 +71,12 @@ const showSuccess = (message) => {
 
   document.addEventListener('keydown', closeSuccessWindowHandler);
 
+  SuccessElement.addEventListener('click', (evt) => {
+    if (!evt.target.closest('.success__inner')) {
+      closeSuccessWindow();
+    }
+  });
+
   SuccessButton.addEventListener('click', () => {
     closeSuccessWindow();
   });
@@ -94,4 +87,4 @@ const showSuccess = (message) => {
   }
 };
 
-export { onDocumentKeydown, onKeyStopPropagation, showAlert, showError, showSuccess };
+export { isEscapeKey, onDocumentKeydown, onKeyStopPropagation, showAlert, showError, showSuccess, isErrorWindowOpen };
