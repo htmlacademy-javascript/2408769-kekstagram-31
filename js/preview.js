@@ -1,5 +1,5 @@
 import { onDocumentKeydown } from './utils.js';
-import { userData, photoBlockElement } from './photo.js';
+import { photoBlockElement } from './render-photos.js';
 
 const bigPictureElement = document.querySelector('.big-picture');
 const bigPictureImageElement = bigPictureElement.querySelector('.big-picture__img img');
@@ -11,35 +11,45 @@ const bigPictureCommentLoaderElement = bigPictureElement.querySelector('.comment
 const bigPictureСommentsList = bigPictureElement.querySelector('.social__comments');
 const bigPictureCloseButton = bigPictureElement.querySelector('.big-picture__cancel');
 const COMMENTS_STEP = 5;
-let shownComments;
-let currentPhotoIndex;
+let shownComments = 0;
+let currentPhotoid;
+let currentPhoto;
 
 const closePreviewPhotoHandler = onDocumentKeydown(closePreviewPhoto);
 
-photoBlockElement.addEventListener('click', (evt) => {
-  const photoIndex = evt.target.closest('[data-index]');
+const renderPictureFullsize = (photos) => {
+  photoBlockElement.addEventListener('click', (evt) => {
+    const picture = evt.target.closest('[data-photo-id]');
 
-  if (photoIndex) {
-    evt.preventDefault();
+    if (picture) {
+      evt.preventDefault();
 
-    currentPhotoIndex = photoIndex.dataset.index;
-    const photoData = userData[currentPhotoIndex];
-    fillPhoto(photoData);
-    openPreviewPhoto();
-  }
-});
+      currentPhotoid = picture.dataset.photoId;
+      currentPhoto = photos.find((photo) => photo.id === +currentPhotoid);
+      fillPhoto(currentPhoto);
+      openPreviewPhoto();
+    }
+  });
+};
 
-function fillPhoto(photoData) {
-  bigPictureImageElement.src = photoData.url;
-  bigPictureLikesElement.textContent = photoData.likes;
-  bigPictureCommentTotalCountElement.textContent = photoData.comments.length;
-  bigPictureDescriptionElement.textContent = photoData.description;
+function fillPhoto(photo) {
+  bigPictureImageElement.src = photo.url;
+  bigPictureLikesElement.textContent = photo.likes;
+  bigPictureCommentTotalCountElement.textContent = photo.comments.length;
+  bigPictureDescriptionElement.textContent = photo.description;
 
   const commentTotalCount = bigPictureCommentTotalCountElement.textContent;
   const shownCommentOnStep = Math.min(commentTotalCount, COMMENTS_STEP);
 
   updateShownCommentCount(shownCommentOnStep, commentTotalCount);
-  renderComments(photoData.comments);
+  renderComments(photo.comments);
+}
+
+function updateShownCommentCount(shownCommentsCount, totalCommentsCount) {
+  bigPictureCommentLoaderElement.style.display = shownCommentsCount >= totalCommentsCount ? 'none' : 'block';
+
+  bigPictureCommentShownCountElement.textContent = shownCommentsCount;
+  shownComments = shownCommentsCount;
 }
 
 function renderComments(comments) {
@@ -59,13 +69,6 @@ function renderComments(comments) {
   });
 }
 
-function updateShownCommentCount(shownCommentsCount, totalCommentsCount) {
-  bigPictureCommentLoaderElement.style.display = shownCommentsCount >= totalCommentsCount ? 'none' : 'block';
-
-  bigPictureCommentShownCountElement.textContent = shownCommentsCount;
-  shownComments = shownCommentsCount;
-}
-
 function openPreviewPhoto() {
   bigPictureElement.classList.remove('hidden');
   document.body.classList.add('modal-open');
@@ -79,14 +82,17 @@ function closePreviewPhoto() {
 }
 
 bigPictureCommentLoaderElement.addEventListener('click', () => {
-  const photoData = userData[currentPhotoIndex];
-  const commentTotalCount = parseInt(bigPictureCommentTotalCountElement.textContent, 10);
-  shownComments = Math.min(shownComments + COMMENTS_STEP, commentTotalCount);
+  if (currentPhoto) {
+    const commentTotalCount = currentPhoto.comments.length;
+    shownComments = Math.min(shownComments + COMMENTS_STEP, commentTotalCount);
 
-  updateShownCommentCount(shownComments, commentTotalCount);
-  renderComments(photoData.comments);
+    updateShownCommentCount(shownComments, commentTotalCount);
+    renderComments(currentPhoto.comments);
+  }
 });
 
 bigPictureCloseButton.addEventListener('click', () => {
   closePreviewPhoto();
 });
+
+export { renderPictureFullsize };

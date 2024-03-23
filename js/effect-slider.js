@@ -1,6 +1,5 @@
-import { fileDownloadPreview, fileDownloadControl } from './effect-zoom';
+import { fileDownloadControl, fileDownloadPreview, sliderBackground } from './edit-form';
 
-const sliderBackground = document.querySelector('.img-upload__effect-level');
 const sliderElement = document.querySelector('.effect-level__slider');
 const valueElement = document.querySelector('.effect-level__value');
 const inputEffectNone = document.querySelector('#effect-none');
@@ -92,6 +91,5 @@ changeEffect(inputEffectHeat, updateForHeat, 'brightness','');
 fileDownloadControl.addEventListener('change', () => {
   fileDownloadPreview.style.filter = 'none';
   sliderBackground.classList.add('hidden');
+  inputEffectNone.checked = true;
 });
-
-export { sliderBackground };

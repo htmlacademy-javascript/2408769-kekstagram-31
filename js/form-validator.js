@@ -1,6 +1,24 @@
+import { sendData } from './api.js';
+import { showError, showSuccess } from './utils.js';
+import { imageUploadHashtags } from './edit-form.js';
+
+const SubmitButtonText = {
+  IDLE: 'Опубликовать',
+  SENDING: 'Публикую...'
+};
+
 const imageUploadForm = document.querySelector('.img-upload__form');
-const imageUploadTextarea = document.querySelector('.text__description');
-const imageUploadHashtags = document.querySelector('.text__hashtags');
+const imageSumbitButton = document.querySelector('.img-upload__submit');
+
+const blockSubmitButton = () => {
+  imageSumbitButton.disabled = true;
+  imageSumbitButton.textContent = SubmitButtonText.SENDING;
+};
+
+const unblockSubmitButton = () => {
+  imageSumbitButton.disabled = false;
+  imageSumbitButton.textContent = SubmitButtonText.IDLE;
+};
 
 const pristine = new Pristine(imageUploadForm, {
   classTo: 'img-upload__field-wrapper',
@@ -23,14 +41,30 @@ const hasDuplicates = (hashtagsString) => {
 };
 
 pristine.addValidator(imageUploadHashtags, validateHashtagLength, 'Максимальное количество хэштегов - 5');
-pristine.addValidator(imageUploadHashtags, validateHashtags, 'Введен невалидный хештег');
+pristine.addValidator(imageUploadHashtags, validateHashtags, 'Введен неправильный хештег');
 pristine.addValidator(imageUploadHashtags, hasDuplicates, 'Хэштеги повторяются');
 
-imageUploadForm.addEventListener('submit', (evt) => {
-  const isValid = pristine.validate();
-  if (!isValid) {
+const setUserFormSubmit = (onSuccess) => {
+  imageUploadForm.addEventListener('submit', (evt) => {
     evt.preventDefault();
-  }
-});
 
-export { imageUploadTextarea, imageUploadHashtags };
+    const isValid = pristine.validate();
+    if (isValid) {
+      blockSubmitButton();
+      sendData(new FormData(evt.target))
+        .then(onSuccess)
+        .then(() => {
+          onSuccess();
+          showSuccess('Изображение успешно загружено');
+        })
+        .catch(
+          (err) => {
+            showError(err.message);
+          }
+        )
+        .finally(unblockSubmitButton);
+    }
+  });
+};
+
+export { setUserFormSubmit };

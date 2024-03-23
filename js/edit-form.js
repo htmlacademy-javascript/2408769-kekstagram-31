@@ -1,12 +1,18 @@
-import { onDocumentKeydown, onKeyStopPropagation } from './utils.js';
-import { imageUploadHashtags, imageUploadTextarea } from './form-validator.js';
-import { sliderBackground } from './effect-slider.js';
-import { fileDownloadControl } from './effect-zoom.js';
+import { isEscapeKey, onKeyStopPropagation, isErrorWindowOpen } from './utils.js';
 
 const fileDownloadOverlay = document.querySelector('.img-upload__overlay');
 const editorWindowCloseButton = document.querySelector('.img-upload__cancel');
+const fileDownloadControl = document.querySelector('.img-upload__input');
+const fileDownloadPreview = document.querySelector('.img-upload__preview img');
+const sliderBackground = document.querySelector('.img-upload__effect-level');
+const imageUploadTextarea = document.querySelector('.text__description');
+const imageUploadHashtags = document.querySelector('.text__hashtags');
 
-const closeEditorWindowHandler = onDocumentKeydown(closeEditorWindow);
+const closeEditorWindowHandler = () => {
+  if (isEscapeKey && !isErrorWindowOpen) {
+    closeEditorWindow();
+  }
+};
 
 function openEditorWindow() {
   fileDownloadOverlay.classList.remove('hidden');
@@ -27,9 +33,13 @@ function closeEditorWindow() {
 }
 
 fileDownloadControl.addEventListener('change', () => {
+  imageUploadTextarea.value = '';
+  imageUploadHashtags.value = '';
   openEditorWindow();
 });
 
 editorWindowCloseButton.addEventListener('click', () => {
   closeEditorWindow();
 });
+
+export { closeEditorWindow, fileDownloadControl, fileDownloadPreview, sliderBackground, imageUploadHashtags };
