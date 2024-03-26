@@ -1,4 +1,5 @@
 import { debounce } from './utils';
+import { renderPhotosList } from './render-photos';
 
 const NUMBER_RANDOM_PHOTOS = 10;
 const RERENDER_DELAY = 500;
@@ -21,24 +22,21 @@ const filterSwitch = () => {
   });
 };
 
-const filterPhoto = () => {
-  const usersPhotoList = document.querySelector('.pictures');
-  const userPhotos = Array.from(document.querySelectorAll('.picture'));
+const filterPhoto = (photos) => {
+  const userPhotos = photos.slice();
 
   const removePhotos = () => {
-    userPhotos.forEach((photo) => {
-      photo.remove();
+    const usersPhotoList = document.querySelectorAll('.pictures .picture');
+    usersPhotoList.forEach((picture) => {
+      picture.remove();
     });
   };
 
-  const addPhotos = (photos) => {
-    photos.forEach((photo) => {
-      usersPhotoList.append(photo);
-    });
+  const addPhotos = (photo) => {
+    renderPhotosList(photo);
   };
 
-  const getNumberComments = (photo) => photo.querySelector('.picture__comments').textContent;
-
+  const getNumberComments = (photo) => photo.comments.length;
   const compareComments = (photoA, photoB) => {
     const commentsCountA = getNumberComments(photoA);
     const commentsCountB = getNumberComments(photoB);
@@ -54,8 +52,8 @@ const filterPhoto = () => {
 
     if (evt.target.matches('#filter-random')) {
       removePhotos();
-      const rundomUserPhotos = userPhotos.slice().sort(() => Math.random() - 0.5).slice(0, NUMBER_RANDOM_PHOTOS);
-      addPhotos(rundomUserPhotos);
+      const randomUserPhotos = userPhotos.slice().sort(() => Math.random() - 0.5).slice(0, NUMBER_RANDOM_PHOTOS);
+      addPhotos(randomUserPhotos);
     }
 
     if (evt.target.matches('#filter-discussed')) {
