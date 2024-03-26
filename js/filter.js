@@ -27,13 +27,13 @@ const filterPhoto = (photos) => {
 
   const removePhotos = () => {
     const usersPhotoList = document.querySelectorAll('.pictures .picture');
-    usersPhotoList.forEach(picture => {
+    usersPhotoList.forEach((picture) => {
       picture.remove();
     });
   };
 
-  const addPhotos = (photos) => {
-    renderPhotosList(photos);
+  const addPhotos = (photo) => {
+    renderPhotosList(photo);
   };
 
   const getNumberComments = (photo) => photo.comments.length;
