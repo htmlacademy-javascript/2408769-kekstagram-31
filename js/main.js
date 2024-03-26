@@ -18,7 +18,7 @@ getData()
     renderPictureFullsize(photos);
     showFilters();
     filterSwitch();
-    filterPhoto();
+    filterPhoto(photos);
   })
   .catch(
     (err) => {
