@@ -8,15 +8,17 @@ import { getData } from './api.js';
 import { showAlert } from './utils.js';
 import { closeEditorWindow } from './edit-form.js';
 import { setUserFormSubmit } from './form-validator.js';
+import { showFilters, filterSwitch, filterPhoto } from './filter.js';
 import './effect-slider.js';
 import './effect-zoom.js';
 
-const SIMILAR_PHOTO_COUNT = 25;
-
 getData()
   .then((photos) => {
-    renderPhotosList(photos.slice(0, SIMILAR_PHOTO_COUNT));
+    renderPhotosList(photos);
     renderPictureFullsize(photos);
+    showFilters();
+    filterSwitch();
+    filterPhoto();
   })
   .catch(
     (err) => {

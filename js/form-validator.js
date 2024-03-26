@@ -1,6 +1,9 @@
 import { sendData } from './api.js';
 import { showError, showSuccess } from './utils.js';
-import { imageUploadHashtags } from './edit-form.js';
+import { imageUploadHashtags, fileDownloadControl } from './edit-form.js';
+
+const MAX_LENGTH_HASHTAGS = 5;
+const REG_HASHTAGS = /^#[a-zа-яё0-9]{1,19}$/i;
 
 const SubmitButtonText = {
   IDLE: 'Опубликовать',
@@ -26,23 +29,23 @@ const pristine = new Pristine(imageUploadForm, {
   errorTextClass: 'img-upload__field-wrapper--error',
 });
 
-const isValidHashtag = (hashtag) => {
-  const hashtagRegex = /^#[a-zа-яё0-9]{1,19}$/i;
-  return hashtag.trim() === '' || hashtagRegex.test(hashtag);
-};
+const isValidHashtag = (hashtag) => hashtag.trim() === '' || REG_HASHTAGS.test(hashtag);
 
-const validateHashtagLength = (hashtagsString) => hashtagsString.split(' ').length <= 5;
-
-const validateHashtags = (hashtagsString) => hashtagsString.split(' ').every(isValidHashtag);
+const validateHashtags = (hashtagsString) => hashtagsString.trim().split(' ').every(isValidHashtag);
 
 const hasDuplicates = (hashtagsString) => {
-  const uniqueHashtags = new Set(hashtagsString.toLowerCase().split(' '));
-  return uniqueHashtags.size === hashtagsString.split(' ').length;
+  const hashtags = hashtagsString.trim().toLowerCase().split(/\s+/);
+  return hashtags.length === new Set(hashtags).size;
 };
 
-pristine.addValidator(imageUploadHashtags, validateHashtagLength, 'Максимальное количество хэштегов - 5');
+const validateHashtagLength = (hashtagsString) => {
+  const hashtags = hashtagsString.trim().split(/\s+/);
+  return hashtags.length <= MAX_LENGTH_HASHTAGS;
+};
+
 pristine.addValidator(imageUploadHashtags, validateHashtags, 'Введен неправильный хештег');
 pristine.addValidator(imageUploadHashtags, hasDuplicates, 'Хэштеги повторяются');
+pristine.addValidator(imageUploadHashtags, validateHashtagLength, `Максимальное количество хэштегов - ${MAX_LENGTH_HASHTAGS}`);
 
 const setUserFormSubmit = (onSuccess) => {
   imageUploadForm.addEventListener('submit', (evt) => {
@@ -66,5 +69,9 @@ const setUserFormSubmit = (onSuccess) => {
     }
   });
 };
+
+fileDownloadControl.addEventListener('change', () => {
+  pristine.reset();
+});
 
 export { setUserFormSubmit };

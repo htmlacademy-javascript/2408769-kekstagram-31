@@ -2,14 +2,16 @@ import { isEscapeKey, onKeyStopPropagation, isErrorWindowOpen } from './utils.js
 
 const fileDownloadOverlay = document.querySelector('.img-upload__overlay');
 const editorWindowCloseButton = document.querySelector('.img-upload__cancel');
-const fileDownloadControl = document.querySelector('.img-upload__input');
+const fileDownloadControl = document.querySelector('.img-upload__start input[type=file]');
 const fileDownloadPreview = document.querySelector('.img-upload__preview img');
 const sliderBackground = document.querySelector('.img-upload__effect-level');
 const imageUploadTextarea = document.querySelector('.text__description');
 const imageUploadHashtags = document.querySelector('.text__hashtags');
+const smallPreviewPhotos = Array.from(document.querySelectorAll('.effects__preview'));
+const FILE_TYPES = ['jpg', 'jpeg', 'png'];
 
-const closeEditorWindowHandler = () => {
-  if (isEscapeKey && !isErrorWindowOpen) {
+const closeEditorWindowHandler = (evt) => {
+  if (isEscapeKey(evt) && !isErrorWindowOpen) {
     closeEditorWindow();
   }
 };
@@ -33,6 +35,17 @@ function closeEditorWindow() {
 }
 
 fileDownloadControl.addEventListener('change', () => {
+  const file = fileDownloadControl.files[0];
+  const fileName = file.name.toLowerCase();
+  const matches = FILE_TYPES.some((it) => fileName.endsWith(it));
+
+  if (matches) {
+    fileDownloadPreview.src = URL.createObjectURL(file);
+    smallPreviewPhotos.forEach((photo) => {
+      photo.style.backgroundImage = `url(${URL.createObjectURL(file)})`;
+    });
+  }
+
   imageUploadTextarea.value = '';
   imageUploadHashtags.value = '';
   openEditorWindow();
