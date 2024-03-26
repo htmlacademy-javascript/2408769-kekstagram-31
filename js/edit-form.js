@@ -9,8 +9,8 @@ const imageUploadTextarea = document.querySelector('.text__description');
 const imageUploadHashtags = document.querySelector('.text__hashtags');
 const FILE_TYPES = ['jpg', 'jpeg', 'png'];
 
-const closeEditorWindowHandler = () => {
-  if (isEscapeKey && !isErrorWindowOpen) {
+const closeEditorWindowHandler = (evt) => {
+  if (isEscapeKey(evt) && !isErrorWindowOpen) {
     closeEditorWindow();
   }
 };
