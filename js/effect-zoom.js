@@ -1,12 +1,12 @@
 import { fileDownloadControl, fileDownloadPreview } from './edit-form';
 
-const editorValueConrtol = document.querySelector('.scale__control--value');
-const editorWindowBiggerConrtolButton = document.querySelector('.scale__control--bigger');
-const editorWindowSmallerConrtolButton = document.querySelector('.scale__control--smaller');
-
 const STEP_SCALE = 25;
 const MIN_SCALE = 25;
 const MAX_SCALE = 100;
+
+const editorValueConrtol = document.querySelector('.scale__control--value');
+const editorWindowBiggerConrtolButton = document.querySelector('.scale__control--bigger');
+const editorWindowSmallerConrtolButton = document.querySelector('.scale__control--smaller');
 
 let valueScale = MAX_SCALE;
 

@@ -10,12 +10,18 @@ const onDocumentKeydown = (callback) => (evt) => {
 };
 
 const onKeyStopPropagation = (evt) => {
-  if (isEscapeKey) {
+  if (isEscapeKey(evt)) {
     evt.stopPropagation();
   }
 };
 
 let isErrorWindowOpen = false;
+
+const setIsErrorWindowOpen = (value) => {
+  isErrorWindowOpen = value;
+};
+
+const getIsErrorWindowOpen = () => isErrorWindowOpen;
 
 const showAlert = (message) => {
   const alertTemple = document.querySelector('#data-error').content.querySelector('.data-error');
@@ -38,8 +44,14 @@ const showError = (message) => {
 
   document.body.append(errorElement);
 
+  const closeErrorWindow = () => {
+    setIsErrorWindowOpen(false);
+    errorElement.remove();
+    document.removeEventListener('keydown', closeErrorWindowHandler);
+  };
+
   const closeErrorWindowHandler = onDocumentKeydown(closeErrorWindow);
-  isErrorWindowOpen = true;
+  setIsErrorWindowOpen(true);
   document.addEventListener('keydown', closeErrorWindowHandler);
 
   errorElement.addEventListener('click', (evt) => {
@@ -51,40 +63,34 @@ const showError = (message) => {
   errorButton.addEventListener('click', () => {
     closeErrorWindow();
   });
-
-  function closeErrorWindow() {
-    isErrorWindowOpen = false;
-    errorElement.remove();
-    document.removeEventListener('keydown', closeErrorWindowHandler);
-  }
 };
 
 const showSuccess = (message) => {
-  const SuccessTemple = document.querySelector('#success').content.querySelector('.success');
-  const SuccessElement = SuccessTemple.cloneNode(true);
-  SuccessElement.querySelector('.success__title').textContent = message;
-  const SuccessButton = SuccessElement.querySelector('.success__button');
+  const successTemple = document.querySelector('#success').content.querySelector('.success');
+  const successElement = successTemple.cloneNode(true);
+  successElement.querySelector('.success__title').textContent = message;
+  const successButton = successElement.querySelector('.success__button');
 
-  document.body.append(SuccessElement);
+  document.body.append(successElement);
+
+  const closeSuccessWindow = () => {
+    successElement.remove();
+    document.removeEventListener('keydown', closeSuccessWindowHandler);
+  };
 
   const closeSuccessWindowHandler = onDocumentKeydown(closeSuccessWindow);
 
   document.addEventListener('keydown', closeSuccessWindowHandler);
 
-  SuccessElement.addEventListener('click', (evt) => {
+  successElement.addEventListener('click', (evt) => {
     if (!evt.target.closest('.success__inner')) {
       closeSuccessWindow();
     }
   });
 
-  SuccessButton.addEventListener('click', () => {
+  successButton.addEventListener('click', () => {
     closeSuccessWindow();
   });
-
-  function closeSuccessWindow() {
-    SuccessElement.remove();
-    document.removeEventListener('keydown', closeSuccessWindowHandler);
-  }
 };
 
 function debounce (callback, timeoutDelay) {
@@ -96,4 +102,4 @@ function debounce (callback, timeoutDelay) {
   };
 }
 
-export { isEscapeKey, onDocumentKeydown, onKeyStopPropagation, showAlert, showError, showSuccess, isErrorWindowOpen, debounce };
+export { isEscapeKey, onDocumentKeydown, onKeyStopPropagation, showAlert, showError, showSuccess, getIsErrorWindowOpen, debounce };
