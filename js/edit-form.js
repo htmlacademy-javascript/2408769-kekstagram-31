@@ -1,4 +1,6 @@
-import { isEscapeKey, onKeyStopPropagation, isErrorWindowOpen } from './utils.js';
+import { isEscapeKey, onKeyStopPropagation, getIsErrorWindowOpen } from './utils.js';
+
+const FILE_TYPES = ['jpg', 'jpeg', 'png'];
 
 const fileDownloadOverlay = document.querySelector('.img-upload__overlay');
 const editorWindowCloseButton = document.querySelector('.img-upload__cancel');
@@ -8,10 +10,9 @@ const sliderBackground = document.querySelector('.img-upload__effect-level');
 const imageUploadTextarea = document.querySelector('.text__description');
 const imageUploadHashtags = document.querySelector('.text__hashtags');
 const smallPreviewPhotos = Array.from(document.querySelectorAll('.effects__preview'));
-const FILE_TYPES = ['jpg', 'jpeg', 'png'];
 
 const closeEditorWindowHandler = (evt) => {
-  if (isEscapeKey(evt) && !isErrorWindowOpen) {
+  if (isEscapeKey(evt) && !getIsErrorWindowOpen()) {
     closeEditorWindow();
   }
 };

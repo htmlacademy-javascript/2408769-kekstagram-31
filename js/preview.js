@@ -1,6 +1,8 @@
 import { onDocumentKeydown } from './utils.js';
 import { photoBlockElement } from './render-photos.js';
 
+const COMMENTS_STEP = 5;
+
 const bigPictureElement = document.querySelector('.big-picture');
 const bigPictureImageElement = bigPictureElement.querySelector('.big-picture__img img');
 const bigPictureLikesElement = bigPictureElement.querySelector('.likes-count');
@@ -10,7 +12,7 @@ const bigPictureCommentShownCountElement = bigPictureElement.querySelector('.soc
 const bigPictureCommentLoaderElement = bigPictureElement.querySelector('.comments-loader');
 const bigPictureСommentsList = bigPictureElement.querySelector('.social__comments');
 const bigPictureCloseButton = bigPictureElement.querySelector('.big-picture__cancel');
-const COMMENTS_STEP = 5;
+
 let shownComments = 0;
 let currentPhotoid;
 let currentPhoto;
