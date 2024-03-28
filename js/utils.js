@@ -44,15 +44,16 @@ const showError = (message) => {
 
   document.body.append(errorElement);
 
-  const closeErrorWindow = () => {
+  const closeErrorWindowHandler = onDocumentKeydown(closeErrorWindow);
+
+  setIsErrorWindowOpen(true);
+  document.addEventListener('keydown', closeErrorWindowHandler);
+
+  function closeErrorWindow() {
     setIsErrorWindowOpen(false);
     errorElement.remove();
     document.removeEventListener('keydown', closeErrorWindowHandler);
-  };
-
-  const closeErrorWindowHandler = onDocumentKeydown(closeErrorWindow);
-  setIsErrorWindowOpen(true);
-  document.addEventListener('keydown', closeErrorWindowHandler);
+  }
 
   errorElement.addEventListener('click', (evt) => {
     if (!evt.target.closest('.error__inner')) {
@@ -73,14 +74,14 @@ const showSuccess = (message) => {
 
   document.body.append(successElement);
 
-  const closeSuccessWindow = () => {
-    successElement.remove();
-    document.removeEventListener('keydown', closeSuccessWindowHandler);
-  };
-
   const closeSuccessWindowHandler = onDocumentKeydown(closeSuccessWindow);
 
   document.addEventListener('keydown', closeSuccessWindowHandler);
+
+  function closeSuccessWindow() {
+    successElement.remove();
+    document.removeEventListener('keydown', closeSuccessWindowHandler);
+  }
 
   successElement.addEventListener('click', (evt) => {
     if (!evt.target.closest('.success__inner')) {
