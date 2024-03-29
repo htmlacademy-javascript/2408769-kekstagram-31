@@ -37,19 +37,22 @@ function closeEditorWindow() {
 
 fileDownloadControl.addEventListener('change', () => {
   const file = fileDownloadControl.files[0];
-  const fileName = file.name.toLowerCase();
-  const matches = FILE_TYPES.some((it) => fileName.endsWith(it));
+  if (file) {
+    const fileName = file.name.toLowerCase();
+    const fileExtension = fileName.split('.').pop();
+    if (!FILE_TYPES.includes(fileExtension)) {
+      return;
+    }
 
-  if (matches) {
     fileDownloadPreview.src = URL.createObjectURL(file);
     smallPreviewPhotos.forEach((photo) => {
       photo.style.backgroundImage = `url(${URL.createObjectURL(file)})`;
     });
-  }
 
-  imageUploadTextarea.value = '';
-  imageUploadHashtags.value = '';
-  openEditorWindow();
+    imageUploadTextarea.value = '';
+    imageUploadHashtags.value = '';
+    openEditorWindow();
+  }
 });
 
 editorWindowCloseButton.addEventListener('click', () => {
