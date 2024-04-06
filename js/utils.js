@@ -9,7 +9,7 @@ const onDocumentKeydown = (callback) => (evt) => {
   }
 };
 
-const onKeyStopPropagation = (evt) => {
+const preventKeyPropagation = (evt) => {
   if (isEscapeKey(evt)) {
     evt.stopPropagation();
   }
@@ -103,4 +103,4 @@ function debounce (callback, timeoutDelay) {
   };
 }
 
-export { isEscapeKey, onDocumentKeydown, onKeyStopPropagation, showAlert, showError, showSuccess, getIsErrorWindowOpen, debounce };
+export { isEscapeKey, onDocumentKeydown, preventKeyPropagation, showAlert, showError, showSuccess, getIsErrorWindowOpen, debounce };

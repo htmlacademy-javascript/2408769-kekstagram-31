@@ -1,4 +1,4 @@
-import { isEscapeKey, onKeyStopPropagation, getIsErrorWindowOpen } from './utils.js';
+import { isEscapeKey, preventKeyPropagation, getIsErrorWindowOpen } from './utils.js';
 
 const FILE_TYPES = ['jpg', 'jpeg', 'png'];
 
@@ -11,7 +11,7 @@ const imageUploadTextarea = document.querySelector('.text__description');
 const imageUploadHashtags = document.querySelector('.text__hashtags');
 const smallPreviewPhotos = Array.from(document.querySelectorAll('.effects__preview'));
 
-const closeEditorWindowHandler = (evt) => {
+const onEditorWindowClose = (evt) => {
   if (isEscapeKey(evt) && !getIsErrorWindowOpen()) {
     closeEditorWindow();
   }
@@ -20,19 +20,19 @@ const closeEditorWindowHandler = (evt) => {
 function openEditorWindow() {
   fileDownloadOverlay.classList.remove('hidden');
   document.body.classList.add('modal-open');
-  document.addEventListener('keydown', closeEditorWindowHandler);
-  imageUploadHashtags.addEventListener('keydown', onKeyStopPropagation);
-  imageUploadTextarea.addEventListener('keydown', onKeyStopPropagation);
+  document.addEventListener('keydown', onEditorWindowClose);
+  imageUploadHashtags.addEventListener('keydown', preventKeyPropagation);
+  imageUploadTextarea.addEventListener('keydown', preventKeyPropagation);
   sliderBackground.classList.add('hidden');
 }
 
 function closeEditorWindow() {
   fileDownloadOverlay.classList.add('hidden');
   document.body.classList.remove('modal-open');
-  document.removeEventListener('keydown', closeEditorWindowHandler);
+  document.removeEventListener('keydown', onEditorWindowClose);
   document.querySelector('.img-upload__input').value = '';
-  imageUploadHashtags.removeEventListener('keydown', onKeyStopPropagation);
-  imageUploadTextarea.removeEventListener('keydown', onKeyStopPropagation);
+  imageUploadHashtags.removeEventListener('keydown', preventKeyPropagation);
+  imageUploadTextarea.removeEventListener('keydown', preventKeyPropagation);
 }
 
 fileDownloadControl.addEventListener('change', () => {
