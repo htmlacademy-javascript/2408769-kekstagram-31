@@ -62,10 +62,19 @@ function renderComments(comments) {
     const commentElement = document.createElement('li');
     commentElement.classList.add('social__comment');
 
-    commentElement.innerHTML = `
-      <img class="social__picture" src="${comment.avatar}" alt="${comment.name}" width="35" height="35">
-      <p class="social__text">${comment.message}</p>
-    `;
+    const imageElement = document.createElement('img');
+    imageElement.classList.add('social__picture');
+    imageElement.src = comment.avatar;
+    imageElement.alt = comment.name;
+    imageElement.width = 35;
+    imageElement.height = 35;
+
+    const textElement = document.createElement('p');
+    textElement.classList.add('social__text');
+    textElement.textContent = comment.message;
+
+    commentElement.appendChild(imageElement);
+    commentElement.appendChild(textElement);
 
     bigPictureСommentsList.appendChild(commentElement);
   });

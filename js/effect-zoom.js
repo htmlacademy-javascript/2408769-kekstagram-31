@@ -21,11 +21,11 @@ const zoom = (step) => {
   updateScale();
 };
 
-const zoomOut = () => {
+const onImageZoomOut = () => {
   zoom(-STEP_SCALE);
 };
 
-const zoomIn = () => {
+const onImageZoomIn = () => {
   zoom(STEP_SCALE);
 };
 
@@ -34,7 +34,6 @@ fileDownloadControl.addEventListener('change', () => {
   updateScale();
 });
 
-editorWindowSmallerConrtolButton.addEventListener('click', zoomOut);
+editorWindowSmallerConrtolButton.addEventListener('click', onImageZoomOut);
 
-editorWindowBiggerConrtolButton.addEventListener('click', zoomIn);
-
+editorWindowBiggerConrtolButton.addEventListener('click', onImageZoomIn);
